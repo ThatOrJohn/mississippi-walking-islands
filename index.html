@@ -839,13 +839,13 @@ function frame(now){ const dt=Math.min(0.05,(now-last)/1000); last=now;
     const hit=STORMS.find(s=>s.t>t&&s.t<=nt&&(s.feat||showAll));
     if(hit){ setT(hit.t); startStorm(hit,true); showEvent(EVENTS.findIndex(e=>e.storm===hit)); }
     else { setT(nt); showEvent(curEv(t)); } }
-  draw(now,dt); requestAnimationFrame(frame); }
+  requestAnimationFrame(frame); if(wrap.clientWidth!==W) resize(); if(W>0&&H>0) draw(now,dt); }
 const themeChanged=()=>readColors();
 new MutationObserver(themeChanged).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',themeChanged);
 window.addEventListener('resize',resize);
 readColors(); resize();
-if(W<520){ setView('west'); cam={...camT}; }
+if(W>0&&W<520){ setView('west'); cam={...camT}; }
 setT(T1); showEvent(EVENTS.length-1);
 requestAnimationFrame(frame);
 })();
